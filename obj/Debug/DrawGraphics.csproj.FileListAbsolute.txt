@@ -1,0 +1,9 @@
+D:\Projects\DrawGraphics\DrawGraphics\bin\Debug\DrawGraphics.exe.config
+D:\Projects\DrawGraphics\DrawGraphics\bin\Debug\DrawGraphics.exe
+D:\Projects\DrawGraphics\DrawGraphics\bin\Debug\DrawGraphics.pdb
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.csprojResolveAssemblyReference.cache
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.Form1.resources
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.Properties.Resources.resources
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.csproj.GenerateResource.Cache
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.exe
+D:\Projects\DrawGraphics\DrawGraphics\obj\Debug\DrawGraphics.pdb
