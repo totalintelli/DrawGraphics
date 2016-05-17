@@ -1,6 +1,6 @@
 ﻿namespace DrawGraphics
 {
-    partial class Form1
+    partial class FrmStateDrawingSample
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -62,16 +62,16 @@
             this.panel2.Size = new System.Drawing.Size(584, 54);
             this.panel2.TabIndex = 2;
             // 
-            // Form1
+            // FrmStateDrawingSample
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 417);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.Name = "FrmStateDrawingSample";
+            this.Text = "메인 베어링 상태 그리기 샘플";
+            this.SizeChanged += new System.EventHandler(this.FrmStateDrawingSample_SizeChanged);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
