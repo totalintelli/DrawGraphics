@@ -125,64 +125,6 @@ namespace DrawGraphics
             DrawStateType(e.Graphics, Rect_Unknown, DiagResultFlag.Unknown);
             e.Graphics.DrawString(UnknownText, DrawFont, DrawBrush, DrawUnknownTextPoint);
 
-            /*
-            DrawStateType(e.Graphics, Rect_Unbalance, DiagResultFlag.Unbalance);
-            e.Graphics.DrawRectangle(Pens.Black, Rect_Unbalance);
-            e.Graphics.DrawStringEx(Func_MainBearing.DiagResultFlagText(DiagResultFlag.Unbalance),
-            Rect_Unbalance.ToLeftTopPoint(), new GraphTextGDI()
-            {
-                FontSize = 10,
-                XAlign = TextXAlignments.Right,
-                YAlign = TextYAlignments.Bottom
-            });
-
-
-
-            DrawStateType(e.Graphics, Rect_Rubbing, DiagResultFlag.Rubbing);
-            e.Graphics.DrawRectangle(Pens.Black, Rect_Rubbing);
-            e.Graphics.DrawStringEx(Func_MainBearing.DiagResultFlagText(DiagResultFlag.Rubbing),
-            Rect_Rubbing.ToLeftTopPoint(), new GraphTextGDI()
-            {
-                FontSize = 10,
-                XAlign = TextXAlignments.Right,
-                YAlign = TextYAlignments.Bottom
-            });
-
-
-
-            DrawStateType(e.Graphics, Rect_Misalignment, DiagResultFlag.Misalignment);
-            e.Graphics.DrawRectangle(Pens.Black, Rect_Misalignment);
-            e.Graphics.DrawStringEx(Func_MainBearing.DiagResultFlagText(DiagResultFlag.Misalignment),
-            Rect_Misalignment.ToLeftTopPoint(), new GraphTextGDI()
-            {
-                FontSize = 10,
-                XAlign = TextXAlignments.Right,
-                YAlign = TextYAlignments.Bottom
-            });
-
-
-
-            DrawStateType(e.Graphics, Rect_OilWhirl, DiagResultFlag.OilWhirl);
-            e.Graphics.DrawRectangle(Pens.Black, Rect_OilWhirl);
-            e.Graphics.DrawStringEx(Func_MainBearing.DiagResultFlagText(DiagResultFlag.OilWhirl),
-            Rect_OilWhirl.ToLeftTopPoint(), new GraphTextGDI()
-            {
-                FontSize = 10,
-                XAlign = TextXAlignments.Right,
-                YAlign = TextYAlignments.Bottom
-            });
-
-
-            DrawStateType(e.Graphics, Rect_Unknown, DiagResultFlag.Unknown);
-            e.Graphics.DrawRectangle(Pens.Black, Rect_Unknown);
-            e.Graphics.DrawStringEx(Func_MainBearing.DiagResultFlagText(DiagResultFlag.Unknown),
-            Rect_Unknown.ToLeftTopPoint(), new GraphTextGDI()
-            {
-                FontSize = 10,
-                XAlign = TextXAlignments.Right,
-                YAlign = TextYAlignments.Bottom
-            });
-            */
         }
 
 
