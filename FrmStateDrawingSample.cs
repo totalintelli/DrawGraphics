@@ -149,15 +149,15 @@ namespace DrawGraphics
                     case DiagResultFlag.Normal:
                         {
                             #region 정상
-                            int RectCount = 12;                                                              // 직사각형의 개수, 입력하는 값은 변경 가능
-                            float RectWidth = DrawRect.Width / (float)Math.Round((double)RectCount * 2);     // 직사각형의 너비 
-                            float RectHeight = DrawRect.Height * 0.5f;                                       // 직사각형의 높이, 0.5f : 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
-                            float Rate_Height = 0.3f;                                                        // 직사각형의 높이에 대한 비율, 0.3f: 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함 
-                            float RectX = DrawRect.X + DrawRect.Width * 0.13f;                                // 직사각형의 왼쪽 위 모퉁이의 X좌표
-                            float RectY = DrawRect.Y + DrawRect.Height * Rate_Height;                        // 직사각형의 왼쪽 위 모퉁이의 Y좌표
-                            RectangleF LineRect = new RectangleF(RectX, RectY, RectWidth, RectHeight);       // 직사각형의 정보
-                            Brush ResultBackBr = Brushes.CornflowerBlue;                                     // 직사각형의 색상
-                            float Distance = 0.0f;                                                           // 직사각형 꼭지점들 사이의 간격 
+                            int RectCount = 12;                                                               // 직사각형의 개수, 입력하는 값은 변경 가능
+                            float RectWidth = DrawRect.Width / (RectCount * 1.1f);                            // 직사각형의 너비 
+                            float RectHeight = DrawRect.Height * 0.5f;                                        // 직사각형의 높이, 0.5f : 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
+                            float Rate_Height = 0.3f;                                                         // 직사각형의 높이에 대한 비율, 0.3f: 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함 
+                            float RectX = DrawRect.X + DrawRect.Width * 0.05f;                                // 직사각형의 왼쪽 위 모퉁이의 X좌표
+                            float RectY = DrawRect.Y + DrawRect.Height * Rate_Height;                         // 직사각형의 왼쪽 위 모퉁이의 Y좌표
+                            RectangleF LineRect = new RectangleF(RectX, RectY, RectWidth, RectHeight);        // 직사각형의 정보
+                            Brush ResultBackBr = Brushes.CornflowerBlue;                                      // 직사각형의 색상
+                            RectangleF HideRect = new RectangleF(RectX, RectY, RectWidth * 0.2f, RectHeight); // 직사각형들 사이의 간격
 
                             // 직사각형의 개수 - 1 만큼 반복한다.
                             for (int i = 0; i < RectCount; i++)
@@ -179,17 +179,25 @@ namespace DrawGraphics
                                     }
                                 }
 
-                                // 사각형의 왼쪽 위 모퉁이의 X좌표를 구한다.
-                                LineRect.X += Distance;
+                                if (i > 0)
+                                {
+                                    // 사각형의 왼쪽 위 모퉁이의 X좌표를 구한다.
+                                    LineRect.X += RectWidth;
+                                    HideRect.X = LineRect.X;
+                                }
 
                                 // 직사각형의 Y값을 구한다.
                                 LineRect.Y = DrawRect.Y + DrawRect.Height * Rate_Height;
+                                HideRect.Y = LineRect.Y;
 
                                 // 직사각형을 그린다.
                                 gr.FillRectangle(ResultBackBr, LineRect);
 
-                                // 직사각형의 꼭지점 사이의 거리를 구한다.
-                                Distance = (float)Math.Round(RectWidth * 1.5f);
+                                if (HideRect.Width < 1)
+                                {
+                                    HideRect.Width = 1.0f;
+                                }
+                                gr.FillRectangle(new SolidBrush(Color.White), HideRect);
                             }
 
                             break;
@@ -280,13 +288,13 @@ namespace DrawGraphics
                             // 좁은 직사각형을 그린다.
                             gr.FillRectangle(RectBrush, NarrowRectX, NarrowRectY, NarrowRectWidth, NarrowRectHeight);
 
-                            // 200도가 기울어진 좁은 직사각형을 그린다.
+                            // 190도가 기울어진 좁은 직사각형을 그린다.
                             gr.RotateTransform(190.0F);
                             gr.TranslateTransform(NarrowRectX + NarrowRectWidth, NarrowRectY + NarrowRectHeight, MatrixOrder.Append);
                             gr.FillRectangle(RectBrush, -NarrowRectWidth, 0, NarrowRectWidth, NarrowRectHeight);
                             gr.ResetTransform();
 
-                            // 200도가 기울어진 넓은 직사각형을 그린다.
+                            // 190도가 기울어진 넓은 직사각형을 그린다.
                             gr.RotateTransform(190.0F);
                             gr.TranslateTransform(NarrowRectX + NarrowRectWidth, NarrowRectY + NarrowRectHeight, MatrixOrder.Append);
                             gr.FillRectangle(RectBrush, -WideRectWidth - NarrowRectWidth, NarrowRectHeight * 0.3f, WideRectWidth, WideRectHeight);
@@ -296,6 +304,51 @@ namespace DrawGraphics
                     case DiagResultFlag.OilWheel:
                         {
                             // 오일휠
+                            // 반원의 색상
+                            SolidBrush HalfCircleBrush = new SolidBrush(Color.DarkRed);
+                            // 반원의 X좌표
+                            float HalfCircleX = DrawRect.X;
+                            // 반원의 Y좌표
+                            float HalfCircleY = DrawRect.Y + DrawRect.Height * 0.1f;
+                            // 반원의 너비
+                            float HalfCircleWidth = DrawRect.Width * 0.8f;
+                            // 반원의 높이
+                            float HalfCircleHeight = DrawRect.Height * 0.8f;
+                            // 반원의 첫 번째 부분의 각도
+                            float StartAngle = 270.0f;
+                            // 반원의 두 번재 부분의 각도
+                            float SweepAngle = 180.0f;
+                            // 작은 원의 X좌표
+                            float SmallCircleX = DrawRect.X + DrawRect.Width * 0.2f;
+                            // 작은 원의 Y좌표
+                            float SmallCircleY = DrawRect.Y + DrawRect.Height * 0.5f;
+                            // 작은 원의 너비
+                            float SmallCircleWidth = DrawRect.Width * 0.4f;
+                            // 작은 원의 높이
+                            float SmallCircleHeight = DrawRect.Height * 0.4f;
+                            // 가리는 원의 색상
+                            SolidBrush HideCircleBrush = new SolidBrush(Color.White);
+                            // 가리는 원의 X 좌표
+                            float HideCircleX = DrawRect.X + DrawRect.Width * 0.2f;
+                            // 가리는 원의 Y 좌표
+                            float HideCircleY = DrawRect.Y + DrawRect.Height * 0.1f;
+                            // 가리는 원의 너비
+                            float HideCircleWidth = DrawRect.Width * 0.4f;
+                            // 가리는 원의 높이
+                            float HideCircleHeight = DrawRect.Height * 0.4f;
+
+                            // 반원을 그린다.
+                            if (HalfCircleWidth > 0 && HalfCircleHeight > 0)
+                            {
+                                gr.FillPie(HalfCircleBrush, HalfCircleX, HalfCircleY, HalfCircleWidth, HalfCircleHeight, StartAngle, SweepAngle);
+                            }
+
+                            // 반원의 아랫 부분에 작은 원을 붙인다.
+                            gr.FillEllipse(HalfCircleBrush, SmallCircleX, SmallCircleY, SmallCircleWidth, SmallCircleHeight);
+
+                            // 반원의 윗 부분을 작은 원만큼 가린다.
+                            gr.FillEllipse(HideCircleBrush, HideCircleX, HideCircleY, HideCircleWidth, HideCircleHeight);
+
                             break;
                         }
                     case DiagResultFlag.Unknown:
