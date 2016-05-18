@@ -152,8 +152,8 @@ namespace DrawGraphics
                             int RectCount = 12;                                                              // 직사각형의 개수, 입력하는 값은 변경 가능
                             float RectWidth = DrawRect.Width / (float)Math.Round((double)RectCount * 2);     // 직사각형의 너비 
                             float RectHeight = DrawRect.Height * 0.5f;                                       // 직사각형의 높이, 0.5f : 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
-                            float Rate_Height = 0.3f;                                                        // 직사각형의 높이의 비율, 0.3f: 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함 
-                            float RectX = DrawRect.X + DrawRect.Width * 0.1f;                                // 직사각형의 왼쪽 위 모퉁이의 X좌표
+                            float Rate_Height = 0.3f;                                                        // 직사각형의 높이에 대한 비율, 0.3f: 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함 
+                            float RectX = DrawRect.X + DrawRect.Width * 0.13f;                                // 직사각형의 왼쪽 위 모퉁이의 X좌표
                             float RectY = DrawRect.Y + DrawRect.Height * Rate_Height;                        // 직사각형의 왼쪽 위 모퉁이의 Y좌표
                             RectangleF LineRect = new RectangleF(RectX, RectY, RectWidth, RectHeight);       // 직사각형의 정보
                             Brush ResultBackBr = Brushes.CornflowerBlue;                                     // 직사각형의 색상
@@ -213,8 +213,8 @@ namespace DrawGraphics
                             SolidBrush RightCircleBrush = new SolidBrush(Color.Red);    // 오른쪽 원의 색상
                             float RightCircleX = DrawRect.X + DrawRect.Width * 0.7f;    // 오른쪽 원의 X좌표, 0.7f는 오른쪽 원의 위치의 X좌표를 정하는 값으로 고정값임.
                             float RightCircleY = DrawRect.Y + DrawRect.Height * 0.1f;   // 오른쪽 원의 Y좌표, 0.1f는 오른쪽 원의 위치의 Y좌표를 정하는 값으로 고정값임.
-                            float RightCircleWidth = DrawRect.Width * 0.3f;             // 오른쪽 원의 너비, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
-                            float RightCircleHeight = DrawRect.Height * 0.3f;           // 오른쪽 원의 높이, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
+                            float RightCircleWidth = DrawRect.Width * 0.2f;             // 오른쪽 원의 너비, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
+                            float RightCircleHeight = DrawRect.Height * 0.2f;           // 오른쪽 원의 높이, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
 
                             // 궤도를 그린다.
                             gr.DrawEllipse(OrbitPen, OrbitX, OrbitY, OrbitWidth, OrbitHeight);
@@ -229,25 +229,36 @@ namespace DrawGraphics
                     case DiagResultFlag.Rubbing:
                         {
                             //  접촉
-                            Pen BigCirclePen = new Pen(Color.Pink, 3.0f);                               // 큰 원의 색상
-                            float BigCircleX = DrawRect.X + DrawRect.Width * 0.25f;                     // 큰 원의 X 좌표
-                            float BigCircleY = DrawRect.Y + DrawRect.Height * 0.25f;                    // 큰 원의 Y 좌표
-                            float BigCircleWidth = DrawRect.Width * 0.5f;                               // 큰 원의 너비
-                            float BigCircleHeight = DrawRect.Height * 0.5f;                             // 큰 원의 높이
-                            SolidBrush PieBrush = new SolidBrush(Color.Red);                            // 부채꼴의 색상
-                            float PieX = DrawRect.X + DrawRect.Width * 0.3f;                           // 부채꼴의 X좌표
-                            float PieY = DrawRect.Y + DrawRect.Height * 0.25f; // 부채꼴의 Y좌표
-                            float PieWidth = DrawRect.Width * 0.5f;                                    // 부채꼴의 너비
-                            float PieHeight = DrawRect.Height * 0.5f;                                  // 부채꼴의 높이
+                            Pen BigCirclePen = new Pen(Color.Pink, 3.0f);                // 큰 원의 색상
+                            float BigCircleX = DrawRect.X + DrawRect.Width * 0.01f + 2;  // 큰 원의 X 좌표, 2는 그림이 그리기 영역을 구분하는 선과 떼어놓기 위한 값
+                            float BigCircleY = DrawRect.Y + DrawRect.Height * 0.01f + 2; // 큰 원의 Y 좌표, 2는 그림이 그리기 영역을 구분하는 선과 떼어놓기 위한 값
+                            float BigCircleWidth = DrawRect.Width * 0.9f;                // 큰 원의 너비, 0.9f는 그리기 영역의 너비에 대한 큰 원의 너비의 비율
+                            float BigCircleHeight = DrawRect.Height * 0.9f;              // 큰 원의 높이, 0.9f는 그리기 영역의 너비에 대한 큰 원의 높이의 비율
+                            SolidBrush PieBrush = new SolidBrush(Color.Red);             // 부채꼴의 색상
+                            float PieX = BigCircleX;                                     // 부채꼴의 X좌표
+                            float PieY = BigCircleY;                                     // 부채꼴의 Y좌표
+                            float PieWidth = BigCircleWidth * 0.99f;                     // 부채꼴의 너비, 0.99f는 큰 원의 모서리가 보이게 하기 위한 값
+                            float PieHeight = BigCircleHeight * 0.99f;                   // 부채꼴의 높이, 0.99f는 큰 원의 모서리가 보이게 하기 위한 값
+                            float StartAngle = 10.0F;                                    // 부채꼴의 첫 번째 부분의 각도
+                            float SweepAngle = 140.0F;                                   // 부채꼴의 두 번째 부분의 각도
+                            SolidBrush SmallCircleBrush = new SolidBrush(Color.Pink);    // 부채꼴의 색상
+                            float SmallCircleX = DrawRect.X + DrawRect.Width * 0.25f;    // 작은 원의 X좌표, 0.25f는 작은 원의 위치를 정하기 위한 값으로 변경 불가
+                            float SmallCircleY = DrawRect.Y + DrawRect.Height * 0.25f;   // 작은 원의 Y좌표, 0.25f는 작은 원의 위치를 정하기 위한 값으로 변경 불가
+                            float SmallCircleWidth = DrawRect.Width * 0.6f;              // 작은 원의 너비, 0.6f는 그리기 영역의 너비에 대한 작은 원의 너비의 비율
+                            float SmallCircleHeight = DrawRect.Height * 0.6f;            // 작은 원의 높이, 0.6f는 그리기 영역의 높이에 대한 작은 원의 높이의 비율
 
                             // 큰 원을 그린다.
                             gr.DrawEllipse(BigCirclePen, BigCircleX, BigCircleY, BigCircleWidth, BigCircleHeight);
 
-                            
                             // 부채꼴을 큰 원에 겹쳐서 그린다.
-                            gr.FillPie(PieBrush, PieX, PieY, PieWidth, PieHeight, 45.0f, 120.0f);
+                            if (PieWidth > 0 && PieHeight > 0)
+                            {
+                                gr.FillPie(PieBrush, PieX, PieY, PieWidth, PieHeight, StartAngle, SweepAngle);
+                            }
 
                             // 작은 원을 부채꼴에 겹쳐서 그린다.
+                            gr.FillEllipse(SmallCircleBrush, SmallCircleX, SmallCircleY, SmallCircleWidth, SmallCircleHeight);
+
                             break;
                         }
                     case DiagResultFlag.Misalignment:
