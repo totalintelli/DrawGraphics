@@ -142,22 +142,29 @@ namespace DrawGraphics
                 isDrwaing = false;
 
             // 실제 타입에 따른 그래프 그리는 구역
-            if (isDrwaing)
+            if (isDrwaing && DrawRect.Width > 0 && DrawRect.Height > 0)
             {
                 switch (Result)
                 {
                     case DiagResultFlag.Normal:
                         {
                             #region 정상
-                            int RectCount = 12;                                                               // 직사각형의 개수, 입력하는 값은 변경 가능
-                            float RectWidth = DrawRect.Width / (RectCount * 1.1f);                            // 직사각형의 너비 
-                            float RectHeight = DrawRect.Height * 0.5f;                                        // 직사각형의 높이, 0.5f : 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
-                            float Rate_Height = 0.3f;                                                         // 직사각형의 높이에 대한 비율, 0.3f: 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함 
-                            float RectX = DrawRect.X + DrawRect.Width * 0.05f;                                // 직사각형의 왼쪽 위 모퉁이의 X좌표
-                            float RectY = DrawRect.Y + DrawRect.Height * Rate_Height;                         // 직사각형의 왼쪽 위 모퉁이의 Y좌표
-                            RectangleF LineRect = new RectangleF(RectX, RectY, RectWidth, RectHeight);        // 직사각형의 정보
-                            Brush ResultBackBr = Brushes.CornflowerBlue;                                      // 직사각형의 색상
-                            RectangleF HideRect = new RectangleF(RectX, RectY, RectWidth * 0.2f, RectHeight); // 직사각형들 사이의 간격
+                            // 직사각형의 개수
+                            int RectCount = 12; // 입력하는 값은 변경 가능
+                            // 직사각형의 높이에 대한 비율
+                            float Rate_Height = 0.3f;
+                            // 직사각형을 그리는 영역
+                            // 1.1f는 직사각형의 너비를 보정하기 위한 값으로 고정값임.
+                            // 0.5f는 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
+                            // 0.3f는 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함.
+                            // 0.05f는 첫 번째 직사각형의 위치를 정하는 값으로 고정값임.
+                            RectangleF Rect = new RectangleF(DrawRect.X + DrawRect.Width * 0.05f, DrawRect.Y + DrawRect.Height * Rate_Height,
+                                                    DrawRect.Width / (RectCount * 1.1f), DrawRect.Height * 0.5f);
+
+                            // 직사각형의 색상        
+                            Brush ResultBackBr = Brushes.CornflowerBlue;
+                            // 직사각형들 사이의 간격                                    
+                            RectangleF HideRect = new RectangleF(Rect.X, Rect.Y, Rect.Width * 0.2f, Rect.Height); // 0.2f : 간격의 너비를 보정하는 값으로 고정값임. 
 
                             // 직사각형의 개수 - 1 만큼 반복한다.
                             for (int i = 0; i < RectCount; i++)
@@ -165,37 +172,38 @@ namespace DrawGraphics
                                 // 곱셈 여부를 확인한다.
                                 if (i % 2 == 0)
                                 {
-                                    Rate_Height = 0.3f;
+                                    Rate_Height = 0.3f;     // 0.3f는 직사각형의 중간 위치를 정하기 위한 값으로 고정값임.
                                 }
                                 else
                                 {
                                     if (i % 4 == 1)
                                     {
-                                        Rate_Height = 0.2f;
+                                        Rate_Height = 0.2f; // 0.2f는 직사각형을 위로 올리기 위한 값으로 고정값임.
                                     }
                                     else
                                     {
-                                        Rate_Height = 0.4f;
+                                        Rate_Height = 0.4f; // 0.4f는 직사각형을 아래로 내리기 위한 값으로 고정값임.
                                     }
                                 }
 
                                 if (i > 0)
                                 {
                                     // 사각형의 왼쪽 위 모퉁이의 X좌표를 구한다.
-                                    LineRect.X += RectWidth;
-                                    HideRect.X = LineRect.X;
+                                    Rect.X += Rect.Width;
+                                    HideRect.X = Rect.X;
                                 }
 
                                 // 직사각형의 Y값을 구한다.
-                                LineRect.Y = DrawRect.Y + DrawRect.Height * Rate_Height;
-                                HideRect.Y = LineRect.Y;
+                                Rect.Y = DrawRect.Y + DrawRect.Height * Rate_Height;
+                                HideRect.Y = Rect.Y;
 
                                 // 직사각형을 그린다.
-                                gr.FillRectangle(ResultBackBr, LineRect);
+                                gr.FillRectangle(ResultBackBr, Rect);
 
+                                // 직사각형들 사이의 간격이 없어지는 현상을 해결하기 위한 코드
                                 if (HideRect.Width < 1)
                                 {
-                                    HideRect.Width = 1.0f;
+                                    HideRect.Width = 1.0f; // 1.0f는 직사각형들 사이의 간격의 최소값으로 고정값임.
                                 }
                                 gr.FillRectangle(new SolidBrush(Color.White), HideRect);
                             }
@@ -206,176 +214,224 @@ namespace DrawGraphics
                         }
                     case DiagResultFlag.Unbalance:
                         {
-                            // Unbalance
-                            float OrbitX = DrawRect.X + DrawRect.Width * 0.01f + 2;     // 궤도의 X좌표, 0.01f는 고정값
-                            float OrbitY = DrawRect.Y + DrawRect.Height * 0.01f + 2;    // 궤도의 Y좌표, 0.01f는 고정값
-                            float OrbitWidth = DrawRect.Width * 0.9f;                   // 궤도의 너비, 0.9f는 궤도가 잘리지 않게 하기 위한 값으로 고정값임.
-                            float OrbitHeight = DrawRect.Height * 0.9f;                 // 궤도의 높이, 0.9f는 궤도가 잘리지 않게 하기 위한 값으로 고정값임.
-                            float OrbitPenWidth = 1 + DrawRect.Width * 0.01f;           // 궤도의 두께
-                            Pen OrbitPen = new Pen(Color.Black, OrbitPenWidth);         // 궤도의 색상
-                            SolidBrush CenterCircleBrush = new SolidBrush(Color.Black); // 중앙에 있는 원의 색상
-                            float CenterCircleX = DrawRect.X + DrawRect.Width * 0.4f;   // 중앙에 있는 원의 X좌표, 0.4f는 중앙에 있는 원의 위치의 X좌표를 정하는 값으로 고정값임.
-                            float CenterCircleY = DrawRect.Y + DrawRect.Height * 0.4f;  // 중앙에 있는 원의 Y좌표, 0.4f는 중앙에 있는 원의 위치의 Y좌표를 정하는 값으로 고정값임.
-                            float CenterCircleWidth = DrawRect.Width * 0.15f;           // 중앙에 있는 원의 너비, 0.15f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
-                            float CenterCircleHeight = DrawRect.Height * 0.15f;         // 중앙에 있는 원의 높이, 0.15f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
-                            SolidBrush RightCircleBrush = new SolidBrush(Color.Red);    // 오른쪽 원의 색상
-                            float RightCircleX = DrawRect.X + DrawRect.Width * 0.7f;    // 오른쪽 원의 X좌표, 0.7f는 오른쪽 원의 위치의 X좌표를 정하는 값으로 고정값임.
-                            float RightCircleY = DrawRect.Y + DrawRect.Height * 0.1f;   // 오른쪽 원의 Y좌표, 0.1f는 오른쪽 원의 위치의 Y좌표를 정하는 값으로 고정값임.
-                            float RightCircleWidth = DrawRect.Width * 0.2f;             // 오른쪽 원의 너비, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
-                            float RightCircleHeight = DrawRect.Height * 0.2f;           // 오른쪽 원의 높이, 0.3f는 오른쪽 원의 너비를 정하는 값으로 고정값임.
+                            #region Unbalance
 
+                            // 궤도
+                            // 0.05f는 궤도의 위치에 대한 값으로 고정값임
+                            // 0.9f는 궤도가 잘리지 않게 하기 위한 값으로 고정값임.
+                            RectangleF OrbitRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.05f, DrawRect.Y + DrawRect.Height * 0.05f,
+                                                                DrawRect.Width * 0.9f, DrawRect.Height * 0.9f);
+                            // 궤도의 두께
+                            float OrbitPenWidth = 1 + DrawRect.Width * 0.01f;           // 1은 두께가 최소한 1이 되게 하기 위한 값으로 고정값임. 0.01f는 두께를 조절하기 위한 값으로 고정값임.
+                            // 궤도의 색상
+                            Pen OrbitPen = new Pen(Color.Black, OrbitPenWidth);
+                            // 중앙에 있는 원의 색상     
+                            SolidBrush CenterCircleBrush = new SolidBrush(Color.Black);
+                            // 중앙에 있는 원
+                            // 0.43f는 중앙에 있는 원의 위치의 정하는 값으로 고정값임.
+                            // 0.15f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값임.
+                            RectangleF CenterCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.43f, DrawRect.Y + DrawRect.Height * 0.43f,
+                                                                DrawRect.Width * 0.15f, DrawRect.Height * 0.15f);
+                            // 오른쪽 원의 색상
+                            SolidBrush RightCircleBrush = new SolidBrush(Color.Red);
+                            // 오른쪽에 있는 원
+                            // 0.7f는 오른쪽 원의 위치의 X좌표를 정하는 값으로 고정값임.
+                            // 0.1f는 오른쪽 원의 위치의 Y좌표를 정하는 값으로 고정값임.
+                            // 0.2f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값임.
+                            RectangleF RightCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.7f, DrawRect.Y + DrawRect.Height * 0.1f,
+                                                                    DrawRect.Width * 0.2f, DrawRect.Height * 0.2f);
                             // 궤도를 그린다.
-                            gr.DrawEllipse(OrbitPen, OrbitX, OrbitY, OrbitWidth, OrbitHeight);
+                            gr.DrawEllipse(OrbitPen, OrbitRect);
 
                             // 중앙에 있는 원을 그린다.
-                            gr.FillEllipse(CenterCircleBrush, CenterCircleX, CenterCircleY, CenterCircleWidth, CenterCircleHeight);
+                            gr.FillEllipse(CenterCircleBrush, CenterCircleRect);
 
                             // 오른쪽 원을 그린다.
-                            gr.FillEllipse(RightCircleBrush, RightCircleX, RightCircleY, RightCircleWidth, RightCircleHeight);
+                            gr.FillEllipse(RightCircleBrush, RightCircleRect);
+
                             break;
+
+                            #endregion
                         }
                     case DiagResultFlag.Rubbing:
                         {
-                            //  접촉
-                            Pen BigCirclePen = new Pen(Color.Pink, 3.0f);                // 큰 원의 색상
-                            float BigCircleX = DrawRect.X + DrawRect.Width * 0.01f + 2;  // 큰 원의 X 좌표, 2는 그림이 그리기 영역을 구분하는 선과 떼어놓기 위한 값
-                            float BigCircleY = DrawRect.Y + DrawRect.Height * 0.01f + 2; // 큰 원의 Y 좌표, 2는 그림이 그리기 영역을 구분하는 선과 떼어놓기 위한 값
-                            float BigCircleWidth = DrawRect.Width * 0.9f;                // 큰 원의 너비, 0.9f는 그리기 영역의 너비에 대한 큰 원의 너비의 비율
-                            float BigCircleHeight = DrawRect.Height * 0.9f;              // 큰 원의 높이, 0.9f는 그리기 영역의 너비에 대한 큰 원의 높이의 비율
-                            SolidBrush PieBrush = new SolidBrush(Color.Red);             // 부채꼴의 색상
-                            float PieX = BigCircleX;                                     // 부채꼴의 X좌표
-                            float PieY = BigCircleY;                                     // 부채꼴의 Y좌표
-                            float PieWidth = BigCircleWidth * 0.99f;                     // 부채꼴의 너비, 0.99f는 큰 원의 모서리가 보이게 하기 위한 값
-                            float PieHeight = BigCircleHeight * 0.99f;                   // 부채꼴의 높이, 0.99f는 큰 원의 모서리가 보이게 하기 위한 값
-                            float StartAngle = 10.0F;                                    // 부채꼴의 첫 번째 부분의 각도
-                            float SweepAngle = 140.0F;                                   // 부채꼴의 두 번째 부분의 각도
-                            SolidBrush SmallCircleBrush = new SolidBrush(Color.Pink);    // 부채꼴의 색상
-                            float SmallCircleX = DrawRect.X + DrawRect.Width * 0.25f;    // 작은 원의 X좌표, 0.25f는 작은 원의 위치를 정하기 위한 값으로 변경 불가
-                            float SmallCircleY = DrawRect.Y + DrawRect.Height * 0.25f;   // 작은 원의 Y좌표, 0.25f는 작은 원의 위치를 정하기 위한 값으로 변경 불가
-                            float SmallCircleWidth = DrawRect.Width * 0.6f;              // 작은 원의 너비, 0.6f는 그리기 영역의 너비에 대한 작은 원의 너비의 비율
-                            float SmallCircleHeight = DrawRect.Height * 0.6f;            // 작은 원의 높이, 0.6f는 그리기 영역의 높이에 대한 작은 원의 높이의 비율
+                            #region 접촉
+
+                            // 큰 원의 색상
+                            Pen BigCirclePen = new Pen(Color.Pink, 3.0f);
+                            // 큰 원
+                            // 0.05f는 그림이 그리기 영역을 구분하는 선과 떼어놓기 위한 값으로 고정값.
+                            // 0.9f는 그리기 영역의 너비에 대한 큰 원의 너비의 비율이나 그리기 영역의 높이에 대한 큰 원의 높이의 비율로 고정값.
+                            RectangleF BigCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.05f, DrawRect.Y + DrawRect.Height * 0.05f,
+                                                                DrawRect.Width * 0.9f, DrawRect.Height * 0.9f);
+                            // 부채꼴의 색상
+                            SolidBrush PieBrush = new SolidBrush(Color.Red);
+                            // 부채꼴
+                            // 0.99f는 큰 원의 모서리가 보이게 하기 위한 값.
+                            RectangleF PieRect = new RectangleF(BigCircleRect.X, BigCircleRect.Y, BigCircleRect.Width * 0.99f, BigCircleRect.Height * 0.99f);
+                            // 부채꼴의 첫 번째 부분의 각도
+                            float StartAngle = 10.0f;                                    // 10.0f는 고정값.
+                            // 부채꼴의 두 번째 부분의 각도                             
+                            float SweepAngle = 140.0f;                                   // 140.0f는 고정값.
+                            // 부채꼴의 색상                                   
+                            SolidBrush SmallCircleBrush = new SolidBrush(Color.Pink);
+                            // 작은 원
+                            // 0.25f는 작은 원의 위치를 정하기 위한 값으로 변경 불가.
+                            // 0.6f는 그리기 영역의 너비에 대한 작은 원의 너비의 비율이면서 그리기 영역의 높이에 대한 작은 원의 높이의 비율이자 고정값.
+                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.25f, DrawRect.Y + DrawRect.Height * 0.25f,
+                                                                        DrawRect.Width * 0.6f, DrawRect.Height * 0.6f);
 
                             // 큰 원을 그린다.
-                            gr.DrawEllipse(BigCirclePen, BigCircleX, BigCircleY, BigCircleWidth, BigCircleHeight);
+                            gr.DrawEllipse(BigCirclePen, BigCircleRect);
 
                             // 부채꼴을 큰 원에 겹쳐서 그린다.
-                            if (PieWidth > 0 && PieHeight > 0)
+                            if (PieRect.Width > 0 && PieRect.Height > 0)
                             {
-                                gr.FillPie(PieBrush, PieX, PieY, PieWidth, PieHeight, StartAngle, SweepAngle);
+                                gr.FillPie(PieBrush, PieRect.X, PieRect.Y, PieRect.Width, PieRect.Height, StartAngle, SweepAngle);
                             }
 
                             // 작은 원을 부채꼴에 겹쳐서 그린다.
-                            gr.FillEllipse(SmallCircleBrush, SmallCircleX, SmallCircleY, SmallCircleWidth, SmallCircleHeight);
+                            gr.FillEllipse(SmallCircleBrush, SmallCircleRect);
 
                             break;
+
+                            #endregion
                         }
                     case DiagResultFlag.Misalignment:
                         {
-                            // 오정렬
+                            #region 오정렬
+
+                            // 넓은 직사각형의 색상
                             SolidBrush RectBrush = new SolidBrush(Color.Red);
-                            float WideRectX = DrawRect.X + DrawRect.Width * 0.1f;      // 넓은 직사각형의 X좌표, 0.1f는 넓은 직사각형을 오른쪽으로 옮기기 위한 값
-                            float WideRectY = DrawRect.Y + DrawRect.Height * 0.35f;    // 넓은 직사각형의 Y좌표, 0.35f는 넓은 직사각형을 아래로 내리기 위한 값
-                            float WideRectWidth = DrawRect.Width * 0.3f;               // 넓은 직사각형의 너비, 0.3f는 그리기 영역의 너비에 대한 비율으로 수정 가능
-                            float WideRectHeight = DrawRect.Height * 0.3f;             // 넓은 직사각형의 높이, 0.3f는 그리기 영역의 높이에 대한 비율으로 수정 가능
-                            float NarrowRectX = WideRectX + WideRectWidth;             // 좁은 직사각형의 X좌표
-                            float NarrowRectY = DrawRect.Y + DrawRect.Height * 0.083f; // 좁은 직사각형의 Y좌표, 0.083f는 좁은 직사각형을 아래로 내리기 위한 값
-                            float NarrowRectWidth = DrawRect.Width * 0.05f;            // 좁은 직사각형의 너비, 0.05f는 그리기 영역의 너비와 좁은 직사각형의 너비에 대한 비율으로 수정 가능
-                            float NarrowRectHeight = DrawRect.Height * 0.83f;          // 좁은 직사각형의 높이, 0.83f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 수정 가능
+                            // 넓은 직사각형
+                            // 0.1f는 넓은 직사각형을 오른쪽으로 옮기기 위한 값.
+                            // 0.35f는 넓은 직사각형을 아래로 내리기 위한 값.
+                            // 0.3f는 그리기 영역의 너비에 대한 비율이자 그리기 영역의 높이에 대한 비율로 고정값.
+                            RectangleF WideRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.1f, DrawRect.Y + DrawRect.Height * 0.35f,
+                                                                DrawRect.Width * 0.3f, DrawRect.Height * 0.3f);
+                            // 좁은 직사각형
+                            // 0.083f는 좁은 직사각형을 아래로 내리기 위한 값
+                            // 0.05f는 그리기 영역의 너비와 좁은 직사각형의 너비에 대한 비율으로 고정값
+                            // 0.83f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 고정값
+                            RectangleF NarrowRect = new RectangleF(WideRect.X + WideRect.Width, DrawRect.Y + DrawRect.Height * 0.083f,
+                                                                DrawRect.Width * 0.05f, DrawRect.Height * 0.83f);
 
                             // 넓은 직사각형을 그린다.
-                            gr.FillRectangle(RectBrush, WideRectX, WideRectY, WideRectWidth, WideRectHeight);
+                            gr.FillRectangle(RectBrush, WideRect);
 
                             // 좁은 직사각형을 그린다.
-                            gr.FillRectangle(RectBrush, NarrowRectX, NarrowRectY, NarrowRectWidth, NarrowRectHeight);
+                            gr.FillRectangle(RectBrush, NarrowRect);
 
-                            // 190도가 기울어진 좁은 직사각형을 그린다.
-                            gr.RotateTransform(190.0F);
-                            gr.TranslateTransform(NarrowRectX + NarrowRectWidth, NarrowRectY + NarrowRectHeight, MatrixOrder.Append);
-                            gr.FillRectangle(RectBrush, -NarrowRectWidth, 0, NarrowRectWidth, NarrowRectHeight);
+                            // 기울어진 좁은 직사각형을 그린다. 190.0f는 좁은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
+                            gr.RotateTransform(185.0f + DrawRect.Width * 0.01f - DrawRect.Height * 0.01f);
+                            gr.TranslateTransform(NarrowRect.X + NarrowRect.Width, NarrowRect.Y + NarrowRect.Height, MatrixOrder.Append);
+                            gr.FillRectangle(RectBrush, NarrowRect.Width - DrawRect.Width * 0.1f, 0, NarrowRect.Width, NarrowRect.Height);
                             gr.ResetTransform();
 
-                            // 190도가 기울어진 넓은 직사각형을 그린다.
-                            gr.RotateTransform(190.0F);
-                            gr.TranslateTransform(NarrowRectX + NarrowRectWidth, NarrowRectY + NarrowRectHeight, MatrixOrder.Append);
-                            gr.FillRectangle(RectBrush, -WideRectWidth - NarrowRectWidth, NarrowRectHeight * 0.3f, WideRectWidth, WideRectHeight);
+                            // 기울어진 넓은 직사각형을 그린다. 190.0f는 넓은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
+                            gr.RotateTransform(185.0f + DrawRect.Width * 0.01f - DrawRect.Height * 0.01f);
+                            gr.TranslateTransform(NarrowRect.X + NarrowRect.Width, NarrowRect.Y + NarrowRect.Height, MatrixOrder.Append);
+                            // NarrowRectHeight * 0.3f는 기울어진 넓은 직사각형의 높이이고 고정값.
+                            gr.FillRectangle(RectBrush, -WideRect.Width - NarrowRect.Width, NarrowRect.Height * 0.3f, WideRect.Width, WideRect.Height);
                             gr.ResetTransform();
+
                             break;
+
+                            #endregion
                         }
                     case DiagResultFlag.OilWheel:
                         {
-                            // 오일휠
+                            #region 오일휠
+
                             // 반원의 색상
                             SolidBrush HalfCircleBrush = new SolidBrush(Color.DarkRed);
-                            // 반원의 X좌표
-                            float HalfCircleX = DrawRect.X;
-                            // 반원의 Y좌표
-                            float HalfCircleY = DrawRect.Y + DrawRect.Height * 0.1f;
-                            // 반원의 너비
-                            float HalfCircleWidth = DrawRect.Width * 0.8f;
-                            // 반원의 높이
-                            float HalfCircleHeight = DrawRect.Height * 0.8f;
+                            // 반원
+                            // 0.1f는 반원의 높이를 보정하기 위한 값으로 고정값.
+                            // 0.8f는 반원의 너비를 보정하기 위한 값이고 반원의 높이를 보정하기 위한 값으로 고정값.
+                            RectangleF HalfCircleRect = new RectangleF(DrawRect.X, DrawRect.Y + DrawRect.Height * 0.1f,
+                                                                    DrawRect.Width * 0.8f, DrawRect.Height * 0.8f);
                             // 반원의 첫 번째 부분의 각도
-                            float StartAngle = 270.0f;
+                            float StartAngle = 270.0f;                                // 270.0f는 고정값임.
                             // 반원의 두 번재 부분의 각도
-                            float SweepAngle = 180.0f;
-                            // 작은 원의 X좌표
-                            float SmallCircleX = DrawRect.X + DrawRect.Width * 0.2f;
-                            // 작은 원의 Y좌표
-                            float SmallCircleY = DrawRect.Y + DrawRect.Height * 0.5f;
-                            // 작은 원의 너비
-                            float SmallCircleWidth = DrawRect.Width * 0.4f;
-                            // 작은 원의 높이
-                            float SmallCircleHeight = DrawRect.Height * 0.4f;
+                            float SweepAngle = 180.0f;                                // 180.0f는 고정값임.
+                            // 작은 원
+                            // 0.2f는 작은 원의 위치와 너비를 보정하기 위한 값이자 고정값.
+                            // 0.5f는 작은 원의 높이를 보정하기 위한 값이자 고정값.
+                            // 0.4f는 작은 원의 위치를 보정하기 위한 값으로 고정값.
+                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.2f, DrawRect.Y + DrawRect.Height * 0.5f,
+                                                                        DrawRect.Width * 0.4f, DrawRect.Height * 0.4f);
                             // 가리는 원의 색상
                             SolidBrush HideCircleBrush = new SolidBrush(Color.White);
-                            // 가리는 원의 X 좌표
-                            float HideCircleX = DrawRect.X + DrawRect.Width * 0.2f;
-                            // 가리는 원의 Y 좌표
-                            float HideCircleY = DrawRect.Y + DrawRect.Height * 0.1f;
-                            // 가리는 원의 너비
-                            float HideCircleWidth = DrawRect.Width * 0.4f;
-                            // 가리는 원의 높이
-                            float HideCircleHeight = DrawRect.Height * 0.4f;
+                            // 가리는 원
+                            // 0.2f는 가리는 원의 위치를 정하기 위한 값으로 고정값.
+                            // 0.1f는 가리는 원의 위치를 정하기 위한 값으로 고정값.
+                            // 0.4f는 가리는 원의 너비와 높이를 보정하기 위한 값으로 고정값.
+                            RectangleF HideCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.2f, DrawRect.Y + DrawRect.Height * 0.1f,
+                                                                       DrawRect.Width * 0.4f, DrawRect.Height * 0.4f);
+                            // 가리기 위한 GraphicsPath
+                            GraphicsPath HideClipPath = new GraphicsPath();
+                            HideClipPath.AddEllipse(HideCircleRect);
 
-                            // 반원을 그린다.
-                            if (HalfCircleWidth > 0 && HalfCircleHeight > 0)
+                            // 기포의 색상
+                            SolidBrush BubbleBrush = new SolidBrush(Color.White);
+                            // 기포 
+                            // 0.4f와 0.7f는 기포의 위치를 정하기 위한 값으로 고정값. 
+                            // 0.2f는 기포의 너비를 정하기 위한 값으로 고정값.
+                            // 0.1f는 기포의 높이를 정하기 위한 값으로 고정값.
+                            RectangleF BubbleRect
+                                = new RectangleF(DrawRect.X + DrawRect.Width * 0.4f, DrawRect.Y + DrawRect.Height * 0.7f,
+                                                            DrawRect.Width * 0.2f, DrawRect.Height * 0.1f);
+                            // 기포를 넣기 위한 GraphicsPath
+                            GraphicsPath BubbleClipPath = new GraphicsPath();
+                            BubbleClipPath.AddEllipse(BubbleRect);
+
+                            // 반원의 너비와 높이가 0보다 큰 지 확인한다.
+                            if (HalfCircleRect.Width > 0 && HalfCircleRect.Height > 0)
                             {
-                                gr.FillPie(HalfCircleBrush, HalfCircleX, HalfCircleY, HalfCircleWidth, HalfCircleHeight, StartAngle, SweepAngle);
+                                // 물방울 꼬리를 만든다.
+                                gr.SetClip(HideClipPath, CombineMode.Exclude);
+                                // 기포를 넣는다.
+                                gr.SetClip(BubbleClipPath, CombineMode.Exclude);
+                                // 반원을 그린다.
+                                gr.FillPie(HalfCircleBrush, HalfCircleRect.X, HalfCircleRect.Y, HalfCircleRect.Width, HalfCircleRect.Height, StartAngle, SweepAngle);
                             }
 
                             // 반원의 아랫 부분에 작은 원을 붙인다.
-                            gr.FillEllipse(HalfCircleBrush, SmallCircleX, SmallCircleY, SmallCircleWidth, SmallCircleHeight);
-
-                            // 반원의 윗 부분을 작은 원만큼 가린다.
-                            gr.FillEllipse(HideCircleBrush, HideCircleX, HideCircleY, HideCircleWidth, HideCircleHeight);
+                            gr.FillEllipse(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
 
                             break;
+
+                            #endregion
                         }
                     case DiagResultFlag.Unknown:
                         {
-                            // 알수없음.
+                            #region 알수없음.
+
                             // 원의 색상
                             SolidBrush CircleBrush = new SolidBrush(Color.Black);
-                            // 원의 X좌표
-                            float CircleX = DrawRect.X + DrawRect.Width * 0.3f;
-                            // 원의 Y좌표
-                            float CircleY = DrawRect.Y + DrawRect.Height * 0.5f;
-                            // 원의 너비
-                            float CircleWidth = DrawRect.Width * 0.1f;
-                            // 원의 높이
-                            float CircleHeight = DrawRect.Height * 0.1f;
+                            // 원
+                            // 0.3f는 원의 위치를 정하기 위한 값으로 고정값.
+                            // 0.5f는 원의 위치를 정하기 위한 값으로 고정값.
+                            // 0.1f는 원의 너비와 높이를 정하기 위한 값으로 고정값.
+                            RectangleF CircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.3f, DrawRect.Y + DrawRect.Height * 0.5f,
+                                                                    DrawRect.Width * 0.1f, DrawRect.Height * 0.1f);
                             // 원의 개수
-                            int CircleCount = 3;
+                            int CircleCount = 3;                                        // 3은 고정값.
                             // 원의 간격
-                            float Distance = DrawRect.Width / (float)(CircleCount * 2);
+                            float Distance = DrawRect.Width / (float)(CircleCount * 2); // 2는 원의 간격을 정하기 위한 값으로 고정값.
 
                             // 원 세 개를 그린다.
+                            float Value = CircleRect.X;
+
                             for (int i = 0; i < CircleCount; i++)
                             {
-                                gr.FillEllipse(CircleBrush, CircleX, CircleY, CircleWidth, CircleHeight);
-                                CircleX += Distance;
+                                gr.FillEllipse(CircleBrush, Value, CircleRect.Y, CircleRect.Width, CircleRect.Height);
+                                Value += Distance;
                             }
+
                             break;
+
+                            #endregion
                         }
                     default:
                         break;
