@@ -325,6 +325,7 @@ namespace DrawGraphics
                             // 기울어진 좁은 직사각형을 그린다. 190.0f는 좁은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
                             gr.RotateTransform(185.0f + DrawRect.Width * 0.01f - DrawRect.Height * 0.01f);
                             gr.TranslateTransform(NarrowRect.X + NarrowRect.Width, NarrowRect.Y + NarrowRect.Height, MatrixOrder.Append);
+                            // DrawRect.Width * 0.1f는 기울어진 좁은 직사각형의 위치를 보정한 값이자 고정값.
                             gr.FillRectangle(RectBrush, NarrowRect.Width - DrawRect.Width * 0.1f, 0, NarrowRect.Width, NarrowRect.Height);
                             gr.ResetTransform();
 
