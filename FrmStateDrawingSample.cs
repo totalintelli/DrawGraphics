@@ -384,6 +384,8 @@ namespace DrawGraphics
                             // 기포를 넣기 위한 GraphicsPath
                             GraphicsPath BubbleClipPath = new GraphicsPath();
                             BubbleClipPath.AddEllipse(BubbleRect);
+                            // 그래픽 컨테이너에 오일휠 그림을 넣는다.
+                            GraphicsContainer ContainerState = gr.BeginContainer();
 
                             // 반원의 너비와 높이가 0보다 큰 지 확인한다.
                             if (HalfCircleRect.Width > 0 && HalfCircleRect.Height > 0)
@@ -398,6 +400,9 @@ namespace DrawGraphics
 
                             // 반원의 아랫 부분에 작은 원을 붙인다.
                             gr.FillEllipse(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
+
+                            // 그래픽 컨테이너를 끝낸다.
+                            gr.EndContainer(ContainerState);
 
                             break;
 
