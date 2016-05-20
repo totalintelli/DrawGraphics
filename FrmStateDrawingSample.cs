@@ -312,9 +312,9 @@ namespace DrawGraphics
                             // 좁은 직사각형
                             // 0.2f는 좁은 직사각형을 아래로 내리기 위한 값
                             // 0.05f는 그리기 영역의 너비와 좁은 직사각형의 너비에 대한 비율으로 고정값
-                            // 0.7f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 고정값
-                            RectangleF NarrowRect = new RectangleF(WideRect.X + WideRect.Width, DrawRect.Y + DrawRect.Height * 0.2f,
-                                                                DrawRect.Width * 0.05f, DrawRect.Height * 0.7f);
+                            // 0.5f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 고정값
+                            RectangleF NarrowRect = new RectangleF(WideRect.X + WideRect.Width, DrawRect.Y + DrawRect.Height * 0.3f,
+                                                                DrawRect.Width * 0.05f, DrawRect.Height * 0.5f);
 
                             // 넓은 직사각형을 그린다.
                             gr.FillRectangle(RectBrush, WideRect);
@@ -322,20 +322,20 @@ namespace DrawGraphics
                             // 좁은 직사각형을 그린다.
                             gr.FillRectangle(RectBrush, NarrowRect);
 
-                            // 기울어진 좁은 직사각형을 그린다. 190.0f는 좁은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
+                            // 기울어진 좁은 직사각형을 그린다. 185.0f는 좁은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
                             gr.RotateTransform(185.0f + DrawRect.Width * 0.01f - DrawRect.Height * 0.01f);
                             gr.TranslateTransform(NarrowRect.X + NarrowRect.Width, NarrowRect.Y + NarrowRect.Height, MatrixOrder.Append);
                             // DrawRect.Width * 0.1f는 기울어진 좁은 직사각형의 위치를 보정한 값이자 고정값.
                             gr.FillRectangle(RectBrush, NarrowRect.Width - DrawRect.Width * 0.1f, 0, NarrowRect.Width, NarrowRect.Height);
                             gr.ResetTransform();
 
-                            // 기울어진 넓은 직사각형을 그린다. 190.0f는 넓은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
+                            // 기울어진 넓은 직사각형을 그린다. 185.0f는 넓은 직사각형을 기울이기 위한 값. 0.01f는 직사각형의 기울기를 조절하기 위한 값으로 고정값.
                             gr.RotateTransform(185.0f + DrawRect.Width * 0.01f - DrawRect.Height * 0.01f);
-                            gr.TranslateTransform(NarrowRect.X + NarrowRect.Width, NarrowRect.Y + NarrowRect.Height, MatrixOrder.Append);
+                            // 0.9f와 1.08f는 기울어진 넓은 직사각형의 위치를 보정하기 위한 값으로 고정값.
+                            gr.TranslateTransform(NarrowRect.X + NarrowRect.Width * 0.9f, NarrowRect.Y + NarrowRect.Height * 1.08f, MatrixOrder.Append);
                             // NarrowRectHeight * 0.3f는 기울어진 넓은 직사각형의 높이이고 고정값.
                             gr.FillRectangle(RectBrush, -WideRect.Width - NarrowRect.Width, NarrowRect.Height * 0.3f, WideRect.Width, WideRect.Height);
                             gr.ResetTransform();
-
                             break;
 
                             #endregion
@@ -348,18 +348,17 @@ namespace DrawGraphics
                             SolidBrush HalfCircleBrush = new SolidBrush(Color.DarkRed);
                             // 반원
                             // 0.1f는 반원의 높이를 보정하기 위한 값으로 고정값.
-                            // 0.8f는 반원의 너비를 보정하기 위한 값이고 반원의 높이를 보정하기 위한 값으로 고정값.
+                            // 0.8f는 반원의 너비와 높이를 보정하기 위한 값이자 고정값.
                             RectangleF HalfCircleRect = new RectangleF(DrawRect.X, DrawRect.Y + DrawRect.Height * 0.1f,
                                                                     DrawRect.Width * 0.8f, DrawRect.Height * 0.8f);
                             // 반원의 첫 번째 부분의 각도
-                            float StartAngle = 270.0f;                                // 270.0f는 고정값임.
+                            float StartAngle = 270.0f; // 270.0f는 고정값임.
                             // 반원의 두 번재 부분의 각도
-                            float SweepAngle = 180.0f;                                // 180.0f는 고정값임.
+                            float SweepAngle = 180.0f; // 180.0f는 고정값임.
                             // 작은 원
-                            // 0.2f는 작은 원의 위치와 너비를 보정하기 위한 값이자 고정값.
-                            // 0.5f는 작은 원의 높이를 보정하기 위한 값이자 고정값.
-                            // 0.4f는 작은 원의 위치를 보정하기 위한 값으로 고정값.
-                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.2f, DrawRect.Y + DrawRect.Height * 0.5f,
+                            // 0.4f는 작은 원의 위치의 X값와 너비와 높이를 보정하기 위한 값이자 고정값.
+                            // 0.7f는 작은 원의 위치의 Y값을 보정하기 위한 값으로 고정값.
+                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.4f, DrawRect.Y + DrawRect.Height * 0.7f,
                                                                         DrawRect.Width * 0.4f, DrawRect.Height * 0.4f);
                             // 가리는 원의 색상
                             SolidBrush HideCircleBrush = new SolidBrush(Color.White);
@@ -400,7 +399,7 @@ namespace DrawGraphics
                             }
 
                             // 반원의 아랫 부분에 작은 원을 붙인다.
-                            gr.FillEllipse(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
+                            gr.FillEllipseCenter(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
 
                             // 그래픽 컨테이너를 끝낸다.
                             gr.EndContainer(ContainerState);
