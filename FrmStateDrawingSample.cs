@@ -305,14 +305,14 @@ namespace DrawGraphics
                             SolidBrush RectBrush = new SolidBrush(Color.Red);
                             // 넓은 직사각형
                             // 0.1f는 넓은 직사각형을 오른쪽으로 옮기기 위한 값.
-                            // 0.35f는 넓은 직사각형을 아래로 내리기 위한 값.
+                            // 0.4f는 넓은 직사각형을 아래로 내리기 위한 값.
                             // 0.3f는 그리기 영역의 너비에 대한 비율이자 그리기 영역의 높이에 대한 비율로 고정값.
                             RectangleF WideRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.1f, DrawRect.Y + DrawRect.Height * 0.4f,
                                                                 DrawRect.Width * 0.3f, DrawRect.Height * 0.3f);
                             // 좁은 직사각형
-                            // 0.083f는 좁은 직사각형을 아래로 내리기 위한 값
+                            // 0.2f는 좁은 직사각형을 아래로 내리기 위한 값
                             // 0.05f는 그리기 영역의 너비와 좁은 직사각형의 너비에 대한 비율으로 고정값
-                            // 0.83f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 고정값
+                            // 0.7f는 그리기 영역의 높이와 좁은 직사각형의 높이에 대한 비율으로 고정값
                             RectangleF NarrowRect = new RectangleF(WideRect.X + WideRect.Width, DrawRect.Y + DrawRect.Height * 0.2f,
                                                                 DrawRect.Width * 0.05f, DrawRect.Height * 0.7f);
 
@@ -380,8 +380,8 @@ namespace DrawGraphics
                             // 0.2f는 기포의 너비를 정하기 위한 값으로 고정값.
                             // 0.1f는 기포의 높이를 정하기 위한 값으로 고정값.
                             RectangleF BubbleRect
-                                = new RectangleF(DrawRect.X + DrawRect.Width * 0.4f, DrawRect.Y + DrawRect.Height * 0.7f,
-                                                            DrawRect.Width * 0.2f, DrawRect.Height * 0.1f);
+                                = new RectangleF(DrawRect.X + DrawRect.Width * 0.35f, DrawRect.Y + DrawRect.Height * 0.75f,
+                                                            DrawRect.Width * 0.2f, DrawRect.Height * 0.05f);
                             // 기포를 넣기 위한 GraphicsPath
                             GraphicsPath BubbleClipPath = new GraphicsPath();
                             BubbleClipPath.AddEllipse(BubbleRect);
