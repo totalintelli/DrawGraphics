@@ -154,17 +154,17 @@ namespace DrawGraphics
                             // 직사각형의 높이에 대한 비율
                             float Rate_Height = 0.3f;
                             // 직사각형을 그리는 영역
-                            // 1.1f는 직사각형의 너비를 보정하기 위한 값으로 고정값임.
+                            // 1.1f는 직사각형의 너비를 보정하기 위한 값으로 고정값.
                             // 0.5f는 직사각형의 높이를 그리는 부분 높이의 반으로 정함.
                             // 0.3f는 처음에 그릴 직사각형을 그리는 부분의 높이의 3분의 1 지점에 오게 함.
-                            // 0.05f는 첫 번째 직사각형의 위치를 정하는 값으로 고정값임.
+                            // 0.05f는 첫 번째 직사각형의 위치를 정하는 값으로 고정값.
                             RectangleF Rect = new RectangleF(DrawRect.X + DrawRect.Width * 0.05f, DrawRect.Y + DrawRect.Height * Rate_Height,
                                                     DrawRect.Width / (RectCount * 1.1f), DrawRect.Height * 0.5f);
 
                             // 직사각형의 색상        
                             Brush ResultBackBr = Brushes.CornflowerBlue;
                             // 직사각형들 사이의 간격                                    
-                            RectangleF HideRect = new RectangleF(Rect.X, Rect.Y, Rect.Width * 0.2f, Rect.Height); // 0.2f : 간격의 너비를 보정하는 값으로 고정값임. 
+                            RectangleF HideRect = new RectangleF(Rect.X, Rect.Y, Rect.Width * 0.2f, Rect.Height); // 0.2f : 간격의 너비를 보정하는 값으로 고정값. 
 
                             // 직사각형의 개수 - 1 만큼 반복한다.
                             for (int i = 0; i < RectCount; i++)
@@ -172,17 +172,17 @@ namespace DrawGraphics
                                 // 곱셈 여부를 확인한다.
                                 if (i % 2 == 0)
                                 {
-                                    Rate_Height = 0.3f;     // 0.3f는 직사각형의 중간 위치를 정하기 위한 값으로 고정값임.
+                                    Rate_Height = 0.3f;     // 0.3f는 직사각형의 중간 위치를 정하기 위한 값으로 고정값.
                                 }
                                 else
                                 {
                                     if (i % 4 == 1)
                                     {
-                                        Rate_Height = 0.2f; // 0.2f는 직사각형을 위로 올리기 위한 값으로 고정값임.
+                                        Rate_Height = 0.2f; // 0.2f는 직사각형을 위로 올리기 위한 값으로 고정값.
                                     }
                                     else
                                     {
-                                        Rate_Height = 0.4f; // 0.4f는 직사각형을 아래로 내리기 위한 값으로 고정값임.
+                                        Rate_Height = 0.4f; // 0.4f는 직사각형을 아래로 내리기 위한 값으로 고정값.
                                     }
                                 }
 
@@ -203,7 +203,7 @@ namespace DrawGraphics
                                 // 직사각형들 사이의 간격이 없어지는 현상을 해결하기 위한 코드
                                 if (HideRect.Width < 1)
                                 {
-                                    HideRect.Width = 1.0f; // 1.0f는 직사각형들 사이의 간격의 최소값으로 고정값임.
+                                    HideRect.Width = 1.0f; // 1.0f는 직사각형들 사이의 간격의 최소값으로 고정값.
                                 }
                                 gr.FillRectangle(new SolidBrush(Color.White), HideRect);
                             }
@@ -217,27 +217,27 @@ namespace DrawGraphics
                             #region Unbalance
 
                             // 궤도
-                            // 0.05f는 궤도의 위치에 대한 값으로 고정값임
-                            // 0.9f는 궤도가 잘리지 않게 하기 위한 값으로 고정값임.
+                            // 0.05f는 궤도의 위치에 대한 값으로 고정값.
+                            // 0.9f는 궤도가 잘리지 않게 하기 위한 값으로 고정값.
                             RectangleF OrbitRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.05f, DrawRect.Y + DrawRect.Height * 0.05f,
                                                                 DrawRect.Width * 0.9f, DrawRect.Height * 0.9f);
                             // 궤도의 두께
-                            float OrbitPenWidth = 1 + DrawRect.Width * 0.01f;           // 1은 두께가 최소한 1이 되게 하기 위한 값으로 고정값임. 0.01f는 두께를 조절하기 위한 값으로 고정값임.
+                            float OrbitPenWidth = 1 + DrawRect.Width * 0.01f;           // 1은 두께가 최소한 1이 되게 하기 위한 값으로 고정값임. 0.01f는 두께를 조절하기 위한 값으로 고정값.
                             // 궤도의 색상
                             Pen OrbitPen = new Pen(Color.Black, OrbitPenWidth);
                             // 중앙에 있는 원의 색상     
                             SolidBrush CenterCircleBrush = new SolidBrush(Color.Black);
                             // 중앙에 있는 원
-                            // 0.43f는 중앙에 있는 원의 위치의 정하는 값으로 고정값임.
-                            // 0.15f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값임.
+                            // 0.43f는 중앙에 있는 원의 위치의 정하는 값으로 고정값.
+                            // 0.15f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값.
                             RectangleF CenterCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.43f, DrawRect.Y + DrawRect.Height * 0.43f,
                                                                 DrawRect.Width * 0.15f, DrawRect.Height * 0.15f);
                             // 오른쪽 원의 색상
                             SolidBrush RightCircleBrush = new SolidBrush(Color.Red);
                             // 오른쪽에 있는 원
-                            // 0.7f는 오른쪽 원의 위치의 X좌표를 정하는 값으로 고정값임.
-                            // 0.1f는 오른쪽 원의 위치의 Y좌표를 정하는 값으로 고정값임.
-                            // 0.2f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값임.
+                            // 0.7f는 오른쪽 원의 위치의 X좌표를 정하는 값으로 고정값.
+                            // 0.1f는 오른쪽 원의 위치의 Y좌표를 정하는 값으로 고정값.
+                            // 0.2f는 오른쪽 원의 너비와 높이를 정하는 값으로 고정값.
                             RectangleF RightCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.7f, DrawRect.Y + DrawRect.Height * 0.1f,
                                                                     DrawRect.Width * 0.2f, DrawRect.Height * 0.2f);
                             // 궤도를 그린다.
