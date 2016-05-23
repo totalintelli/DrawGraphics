@@ -355,10 +355,10 @@ namespace DrawGraphics
                             float StartAngle = 270.0f; // 270.0f는 고정값임.
                             // 반원의 두 번재 부분의 각도
                             float SweepAngle = 180.0f; // 180.0f는 고정값임.
-                            // 작은 원
-                            // 0.4f는 작은 원의 위치의 X값와 너비와 높이를 보정하기 위한 값이자 고정값.
-                            // 0.7f는 작은 원의 위치의 Y값을 보정하기 위한 값으로 고정값.
-                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.4f, DrawRect.Y + DrawRect.Height * 0.7f,
+                            // 0.2f는 작은 원의 위치와 너비를 보정하기 위한 값이자 고정값.
+                            // 0.5f는 작은 원의 높이를 보정하기 위한 값이자 고정값.
+                            // 0.4f는 작은 원의 위치를 보정하기 위한 값으로 고정값.
+                            RectangleF SmallCircleRect = new RectangleF(DrawRect.X + DrawRect.Width * 0.2f, DrawRect.Y + DrawRect.Height * 0.5f,
                                                                         DrawRect.Width * 0.4f, DrawRect.Height * 0.4f);
                             // 가리는 원의 색상
                             SolidBrush HideCircleBrush = new SolidBrush(Color.White);
@@ -399,7 +399,7 @@ namespace DrawGraphics
                             }
 
                             // 반원의 아랫 부분에 작은 원을 붙인다.
-                            gr.FillEllipseCenter(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
+                            gr.FillEllipse(HalfCircleBrush, SmallCircleRect.X, SmallCircleRect.Y, SmallCircleRect.Width, SmallCircleRect.Height);
 
                             // 그래픽 컨테이너를 끝낸다.
                             gr.EndContainer(ContainerState);
